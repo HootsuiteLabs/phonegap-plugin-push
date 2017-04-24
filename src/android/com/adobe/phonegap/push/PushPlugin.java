@@ -9,6 +9,9 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.iid.InstanceID;
 
+// HS Custom library import
+import com.localytics.android.Localytics;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -77,6 +80,10 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                             JSONObject json = new JSONObject().put(REGISTRATION_ID, registration_id);
 
                             Log.v(LOG_TAG, "onRegistered: " + json.toString());
+
+                            // HS Custom register for push with Localytics
+                            Localytics.setPushRegistrationId(registration_id);
+                            Localytics.upload();
 
                             JSONArray topics = jo.optJSONArray(TOPICS);
                             subscribeToTopics(topics, registration_id);

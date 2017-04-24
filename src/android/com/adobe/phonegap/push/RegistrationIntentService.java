@@ -10,6 +10,9 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+// HS Custom library import
+import com.localytics.android.Localytics;
+
 import java.io.IOException;
 
 public class RegistrationIntentService extends IntentService implements PushConstants {
@@ -30,6 +33,10 @@ public class RegistrationIntentService extends IntentService implements PushCons
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             PushPlugin.setRegistrationID(token);
             Log.i(LOG_TAG, "new GCM Registration Token: " + token);
+
+            // HS Custom register for push with Localytics
+            Localytics.setPushRegistrationId(token);
+            Localytics.upload();
 
         } catch (Exception e) {
             Log.d(LOG_TAG, "Failed to complete token refresh", e);
